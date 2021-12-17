@@ -1,0 +1,24 @@
+{
+  "name": "file_sharing_webrtc",
+  "version": "1.0.0",
+  "description": "share files peer to peer with webrtc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tzagiollari/share_file_securely_peer_to_peer_with_WEBRTC.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tzagiollari/share_file_securely_peer_to_peer_with_WEBRTC/issues"
+  },
+  "homepage": "https://github.com/tzagiollari/share_file_securely_peer_to_peer_with_WEBRTC#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "socket.io": "^4.4.0"
+  }
+}
