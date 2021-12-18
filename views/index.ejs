@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
-    <h1>Send files peer to peer</h1>
+  <body>
+    <h1>Send messages peer to peer</h1>
 
+    <!-- These paragraphs will be initialized when the connection has been established -->
+    <p id="yourname"></p>
+    <p id="remotename"></p>
 
     <button id="connectbutton">Connect with peer</button>
-    <input id="inputfile" type="file">
-    <button id="sharefile">Share file</button>
+    <textarea id="messagearea" name="message" rows="5" cols="50"></textarea>
+    <button id="sendmessage">Send message</button>
+
+    <div id="messagesent"></div>
 
     <!-- Import SocketIO for signalling -->
     <script src="/socket.io/socket.io.js"></script>
@@ -24,6 +28,5 @@
 
     <script src="js/config.js"></script>
     <script src="js/main.js"></script>
-</body>
-
+  </body>
 </html>
