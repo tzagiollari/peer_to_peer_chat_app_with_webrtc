@@ -14,19 +14,12 @@ document.getElementById("yourname").innerHTML="You: "+clientName
 //turnconfig will be defined in public/js/config.js
 var pcConfig = turnConfig;
 
-// Prompting for room name:
-// var room = prompt('Enter room name:');
+
 //setting test room
 var room = "test";
 
 //Initializing socket.io
 var socket = io.connect();
-
-//Ask server to add in the room if room name is provided by the user
-if (room !== "") {
-  // socket.emit('create or join', room);
-  // console.log('Attempted to create or  join room', room);
-}
 
 //Defining socket events
 
@@ -45,14 +38,8 @@ socket.on("full", function (room) {
 //this message is received only by the client that connected first
 //when the second peer is connected
 socket.on("join", function (room, client) {
-  console.log(
-    "Another peer made a request to join room " +
-      room +
-      " whith name :" +
-      client
-  );
+  console.log("Another peer made a request to join room ", room ," whith name :",client);
   console.log("This peer is the initiator of room " + room + "!");
-  sendmessagebutton.disabled = false;
   isChannelReady = true;
   remoteclient = client;
   document.getElementById("remotename").innerHTML=client
@@ -70,7 +57,6 @@ socket.on("mynameis", (client) => {
 socket.on("joined", function (room) {
   console.log("joined: " + room);
   isChannelReady = true;
-  sendmessagebutton.disabled = false;
 });
 
 //Event - server asks to log a message
@@ -134,40 +120,6 @@ function createPeerConnection() {
     pc = new RTCPeerConnection(pcConfig);
     pc.onicecandidate = handleIceCandidate;
     console.log("Created RTCPeerConnnection");
-
-    // Offerer side
-    datachannel = pc.createDataChannel("filetransfer");
-    datachannel.onopen = (event) => {
-      //datachannel.send("oferer sent:THIS")
-    };
-
-    datachannel.onmessage = (event) => {
-      console.log("The oferrer received a message" + event.data);
-    };
-    datachannel.onerror = (error) => {
-      //console.log("Data Channel Error:", error);
-    };
-
-    datachannel.onclose = () => {
-      //console.log("Data Channel closed");
-    };
-
-    // Answerer side
-    pc.ondatachannel = function (event) {
-      var channel = event.channel;
-      channel.onopen = function (event) {
-        channel.send("ANSWEREROPEN");
-      };
-      channel.onmessage = async (event) => {
-        try {
-          var themessage = event.data;
-          console.log(themessage, event);
-          viewmsgtoelement(document.getElementById("messagesent"), themessage);
-        } catch (err) {
-          console.log(err);
-        }
-      };
-    };
   } catch (e) {
     console.log("Failed to create PeerConnection, exception: " + e.message);
     alert("Cannot create RTCPeerConnection object.");
@@ -254,36 +206,4 @@ if (connectbutton) {
     connectbutton.innerHTML = "Connected";
     //connection logic
   });
-}
-
-let messagetexted = "";
-//DOM elements
-
-var messageinput = document.getElementById("messagearea");
-if (messageinput) {
-  //Tip: This event is similar to the onchange event.
-  //The difference is that the oninput event occurs immediately
-  // after the value of an element has changed, while onchange occurs
-  //when the element loses focus, after the content has been changed.
-  //The other difference is that the onchange event also works on <select> elements.
-  messageinput.addEventListener("input", (event) => {
-    console.log(event.target.value);
-    messagetexted = event.target.value;
-  });
-}
-
-var sendmessagebutton = document.getElementById("sendmessage");
-if (sendmessagebutton) {
-  sendmessagebutton.disabled = true;
-  sendmessagebutton.addEventListener("click", () => {
-    var themessage = "<p>" + clientName + ":" + messagetexted + "</p>";
-    viewmsgtoelement(document.getElementById("messagesent"), themessage);
-    datachannel.send(themessage);
-    messageinput.value = "";
-    messagetexted = "";
-  });
-}
-
-function viewmsgtoelement(element, message) {
-  element.innerHTML += "\n" + message;
 }
